@@ -9,14 +9,17 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await fetch(
-        "https://bedrijfsoftware-node-server.onrender.com/"
-      );
-      setRes(data);
+      try {
+        const response = await fetch(import.meta.env.VITE_API_CONNECTION_LOCAL);
+        const json = await response.json();
+        setRes(JSON.stringify(json));
+        console.log(json);
+      } catch (error) {
+        console.error("Fout bij ophalen data:", error);
+      }
     };
     fetchData();
-    console.log(res);
-  }, [res]);
+  }, []);
 
   return (
     <>
