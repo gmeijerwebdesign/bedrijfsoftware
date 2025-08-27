@@ -3,15 +3,19 @@ import Footer from "../components/navigation/footer";
 import Home from "../pages/home";
 import Sidebar from "../components/navigation/sidebar";
 import { useState } from "react";
+import Medewerkers from "../pages/medewerkers";
 
 function MainLayout({ signOut }) {
-  // State voor huidige tab (voor nu enkel "home")
+  // State voor huidige tablad
   const [currentTab, setCurrentTab] = useState("home");
 
   // Content switchen op basis van currentTab (voor uitbreiding)
   const renderContent = () => {
     switch (currentTab) {
       case "home":
+        return <Home />;
+      case "medewerkers":
+        return <Medewerkers />;
       default:
         return <Home />;
     }
@@ -22,10 +26,13 @@ function MainLayout({ signOut }) {
     signOut,
     currentTab,
   };
+  const sideBarProps = {
+    setCurrentTab,
+  };
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar />
+      <Sidebar {...sideBarProps} />
       <div className="flex flex-col w-full">
         <Header {...headerProps} />
         <main className="flex-grow">{renderContent()}</main>
