@@ -1,8 +1,34 @@
-function Medewerkers() {
-  const employees = [
-    { id: 1, name: "Jan Jansen", role: "Developer", email: "jan@bedrijf.nl" },
-    { id: 2, name: "Lisa Peters", role: "Manager", email: "lisa@bedrijf.nl" },
-  ];
+import { useEffect } from "react";
+import { useState } from "react";
+
+function Medewerkers({ currentUser }) {
+  const [users, setUsers] = useState([]);
+  const [error, setError] = useState(null);
+  const [organisations, setOrganisations] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [usersRes, orgsRes] = await Promise.all([
+          fetch(`${import.meta.env.VITE_API_CONNECTION_LOCAL}/users`),
+          fetch(`${import.meta.env.VITE_API_CONNECTION_LOCAL}/organisations`),
+        ]);
+
+        if (!usersRes.ok || !orgsRes.ok) {
+          throw new Error("HTTP error fetching data");
+        }
+
+        const usersData = await usersRes.json();
+        const orgsData = await orgsRes.json();
+
+        setUsers(usersData);
+        setOrganisations(orgsData);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   return (
     <div className="p-6">
@@ -12,17 +38,29 @@ function Medewerkers() {
           <thead className="bg-gray-50 text-left">
             <tr>
               <th className="px-4 py-2 font-medium text-gray-600">Naam</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Rol</th>
               <th className="px-4 py-2 font-medium text-gray-600">Email</th>
+              <th className="px-4 py-2 font-medium text-gray-600">Rol</th>
+              <th className="px-4 py-2 font-medium text-gray-600">
+                Organisatie
+              </th>
+
               <th className="px-4 py-2"></th>
             </tr>
           </thead>
           <tbody>
-            {employees.map((emp) => (
+            {users.map((emp) => (
               <tr key={emp.id} className="odd:bg-gray-50">
-                <td className="px-4 py-2">{emp.name}</td>
+                <td className="px-4 py-2">
+                  {emp.username.split("@gmail.com")}
+                </td>
+                <td className="px-4 py-2">{emp.username}</td>
                 <td className="px-4 py-2">{emp.role}</td>
-                <td className="px-4 py-2">{emp.email}</td>
+                <td className="px-4 py-2">
+                  {organisations.find(
+                    (org) => org.organisation_id === emp.organisation_id
+                  )?.title || "—"}
+                </td>
+
                 <td className="px-4 py-2 text-right">
                   <button className="text-blue-600 hover:underline mr-2">
                     Bewerken

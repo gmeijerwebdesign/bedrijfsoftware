@@ -4,21 +4,57 @@ function LoginPage({ supabase }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
+    setLoading(true);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    // 1️⃣ Inloggen bij Supabase Auth
+    const { error: signInError } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
-      setMessage(`Fout: ${error.message}`);
+    if (signInError) {
+      setMessage(`Fout: ${signInError.message}`);
+      setLoading(false);
+      return;
+    }
+
+    // 2️⃣ Ophalen ingelogde gebruiker
+    const {
+      data: { user },
+      error: userError,
+    } = await supabase.auth.getUser();
+
+    if (userError || !user) {
+      setMessage(`Kon gebruiker niet ophalen: ${userError?.message || ""}`);
+      setLoading(false);
+      return;
+    }
+
+    // 3️⃣ Record in eigen users-table aanmaken (of updaten als het al bestaat)
+    const { error: upsertError } = await supabase.from("users").upsert(
+      {
+        authentication_id: user.id, // verplicht veld met foreign key
+        username: user.email, // optioneel: andere kolommen die je wilt bijhouden
+        password: "ewfe",
+      },
+
+      { onConflict: "authentication_id" }
+    );
+
+    if (upsertError) {
+      setMessage(
+        `Inloggen gelukt, maar kon users-record niet bijwerken: ${upsertError.message}`
+      );
     } else {
       setMessage("Inloggen gelukt!");
     }
+
+    setLoading(false);
   };
 
   const handlePasswordReset = async () => {
@@ -90,9 +126,10 @@ function LoginPage({ supabase }) {
 
             <button
               type="submit"
-              className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition"
+              disabled={loading}
+              className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-300 transition disabled:opacity-50"
             >
-              Inloggen
+              {loading ? "Bezig..." : "Inloggen"}
             </button>
 
             <button

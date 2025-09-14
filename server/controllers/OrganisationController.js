@@ -1,8 +1,8 @@
 import supabase from "../models/supabase.js";
 
-export const getTest = async (req, res) => {
+export const getOrganisations = async (req, res) => {
   try {
-    const { data, error } = await supabase.from("test").select("*");
+    const { data, error } = await supabase.from("organisations").select("*");
     if (error) throw error;
     res.json(data);
   } catch (error) {

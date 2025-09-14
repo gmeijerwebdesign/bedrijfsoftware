@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { FaHome, FaTachometerAlt, FaTable, FaTh, FaUser } from "react-icons/fa";
+import { TbClockHour10Filled } from "react-icons/tb";
+import { FaRegBell } from "react-icons/fa6";
 
 function Sidebar({ setCurrentTab }) {
   const [active, setActive] = useState("home");
 
   const menuItems = [
     { id: "home", icon: <FaHome size={20} />, label: "Home" },
-    { id: "medewerkers", icon: <FaTachometerAlt size={20} />, label: "Gauge" },
-    { id: "table", icon: <FaTable size={20} />, label: "Table" },
-    { id: "grid", icon: <FaTh size={20} />, label: "Grid" },
+    { id: "medewerkers", icon: <FaUser size={20} />, label: "Gauge" },
+    { id: "table", icon: <TbClockHour10Filled size={20} />, label: "Table" },
+    { id: "grid", icon: <FaRegBell size={20} />, label: "Grid" },
     { id: "user", icon: <FaUser size={20} />, label: "User" },
   ];
 

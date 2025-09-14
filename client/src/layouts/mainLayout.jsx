@@ -4,38 +4,40 @@ import Home from "../pages/home";
 import Sidebar from "../components/navigation/sidebar";
 import { useState } from "react";
 import Medewerkers from "../pages/medewerkers";
+import Organisaties from "../pages/organisaties";
 
-function MainLayout({ signOut }) {
+function MainLayout({ signOut, currentUser }) {
   // State voor huidige tablad
-  const [currentTab, setCurrentTab] = useState("home");
+  const [currentTab, setCurrentTab] = useState("Registreren");
 
   // Content switchen op basis van currentTab (voor uitbreiding)
   const renderContent = () => {
     switch (currentTab) {
-      case "home":
+      case "Registreren":
         return <Home />;
-      case "medewerkers":
+      case "Medewerkers":
         return <Medewerkers />;
+      case "Organisaties":
+        return <Organisaties />;
       default:
         return <Home />;
     }
   };
 
-  // props
+  // Custom props
   const headerProps = {
     signOut,
     currentTab,
-  };
-  const sideBarProps = {
     setCurrentTab,
   };
 
   return (
     <div className="flex min-h-screen">
-      <Sidebar {...sideBarProps} />
       <div className="flex flex-col w-full">
         <Header {...headerProps} />
-        <main className="flex-grow">{renderContent()}</main>
+        <main currentUser={currentUser} className="flex-grow p-6">
+          {renderContent()}
+        </main>
         <Footer />
       </div>
     </div>
