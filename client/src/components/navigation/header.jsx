@@ -7,10 +7,10 @@ import { CgOrganisation } from "react-icons/cg";
 function Header({ signOut, currentTab, setCurrentTab }) {
   const navigationButtons = [
     { icon: <FaRegClock />, text: "Registreren" },
-    { icon: <MdDescription />, text: "Facturen" },
-    { icon: <AiFillProject />, text: "Projecten" },
     { icon: <IoPeople />, text: "Medewerkers" },
     { icon: <CgOrganisation />, text: "Organisaties" },
+    // { icon: <MdDescription />, text: "Facturen" },
+    { icon: <AiFillProject />, text: "Projecten" },
   ];
 
   const getButtonClasses = (tabName) => {

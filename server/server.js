@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import organisationRoute from "./routes/OrganisationRoute.js";
 import userRoute from "./routes/UserRoute.js";
+import projectRoute from "./routes/ProjectRoute.js";
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -9,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
+app.use("/api", projectRoute);
 app.use("/api", organisationRoute);
 app.use("/api", userRoute);
 

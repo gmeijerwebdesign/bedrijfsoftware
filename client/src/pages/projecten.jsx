@@ -1,42 +1,38 @@
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FaPlus, FaSearch } from "react-icons/fa";
+
 import { MdKeyboardArrowDown } from "react-icons/md";
 
-function Organisaties() {
+function Projecten({}) {
   const [users, setUsers] = useState([]);
-  const [organisations, setOrganisations] = useState([]);
+  const [projects, setProjects] = useState([]);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [usersRes, orgsRes] = await Promise.all([
+        const [usersRes, projectRes] = await Promise.all([
           fetch(`${import.meta.env.VITE_API_CONNECTION_LOCAL}/users`),
-          fetch(`${import.meta.env.VITE_API_CONNECTION_LOCAL}/organisations`),
+          fetch(`${import.meta.env.VITE_API_CONNECTION_LOCAL}/projects`),
         ]);
-
-        if (!usersRes.ok || !orgsRes.ok) {
+        if (!usersRes.ok || !projectRes.ok)
           throw new Error("HTTP error fetching data");
-        }
 
-        const usersData = await usersRes.json();
-        const orgsData = await orgsRes.json();
-
-        setUsers(usersData);
-        setOrganisations(orgsData);
+        setUsers(await usersRes.json());
+        setProjects(await projectRes.json());
       } catch (err) {
         setError(err.message);
       }
     };
-
     fetchData();
   }, []);
 
-  if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
-
   return (
     <div className="p-6">
-      <h1 className="text-xl font-semibold mb-4">Organisaties</h1>
+      <div className="absolute z-10 left-1/2  -translate-x-1/2"></div>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-2xl font-semibold">Projecten</h1>
+      </div>
 
       {/* filters */}
       <div className="flex justify-between py-4 items-center ">
@@ -68,7 +64,7 @@ function Organisaties() {
             <MdKeyboardArrowDown className="relative top-1/8 text-xl text-gray-700" />
           </button>
           <button
-            onClick={() => setCurrentTab("create-user")}
+            // onClick={() => setCurrentTab("create-user")}
             className="bg-indigo-600 text-white rounded-md px-4 py-1 text-sm hover:bg-indigo-700"
           >
             <FaPlus className="inline w-4 h-4 mr-1" />
@@ -77,6 +73,7 @@ function Organisaties() {
         </div>
       </div>
 
+      {/* tabel */}
       <div className="bg-white shadow-sm rounded overflow-hidden">
         <table className="w-full border-b text-sm border-collapse border border-gray-200">
           <thead className="bg-gray-50 text-left">
@@ -84,11 +81,18 @@ function Organisaties() {
               <th className="border border-gray-200 px-4 py-2 font-medium text-gray-600">
                 <input type="checkbox" />
               </th>
+
               <th className="border border-gray-200 px-4 py-2 font-medium text-gray-600">
-                Titel
+                Project
               </th>
               <th className="border border-gray-200 px-4 py-2 font-medium text-gray-600">
-                Medewerkers
+                Kleur
+              </th>
+              <th className="border border-gray-200 px-4 py-2 font-medium text-gray-600">
+                Klant
+              </th>
+              <th className="border border-gray-200 px-4 py-2 font-medium text-gray-600">
+                Type
               </th>
               <th className="border border-gray-200 px-4 py-2 font-medium text-gray-600">
                 Creator
@@ -99,40 +103,43 @@ function Organisaties() {
             </tr>
           </thead>
           <tbody className="text-gray-600">
-            {/* functie om te calculeren hoeveel mensen er in een organisatie zitten */}
-            {organisations.map((org) => {
-              const count = users.filter(
-                (u) => u.organisation_id === org.organisation_id
-              ).length;
+            {projects.map((emp) => (
+              <tr key={emp.project_id} className="hover:bg-gray-50">
+                <td className="border border-gray-200 px-4 py-2">
+                  <input type="checkbox" />
+                </td>
 
-              return (
-                <tr key={org.organisation_id} className="odd:bg-gray-50">
-                  <td className="border border-gray-200 px-4 py-2">
-                    <input type="checkbox" />
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 text-blue-700 font-medium cursor-pointer">
-                    {org.title}
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">{count}</td>
-                  <td className="border border-gray-200 px-4 py-2">admin</td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    <button className="text-blue-600 hover:underline mr-2">
-                      Bewerken
-                    </button>
-                    <button className="text-red-600 hover:underline">
-                      Verwijderen
-                    </button>
-                  </td>
-                </tr>
-              );
-            })}
+                <td className="border border-gray-200 px-4 py-2 text-blue-700 font-medium cursor-pointer">
+                  {emp.project_title}
+                </td>
+                <td className="border border-gray-200 px-4 py-2">
+                  <span className=" px-2  bg-red-500"></span>
+                </td>
+                <td className="border border-gray-200 px-4 py-2">
+                  {emp.project_customer}
+                </td>
+                <td className="border border-gray-200 px-4 py-2">
+                  {emp.project_type}
+                </td>
+                <td className="border border-gray-200 px-4 py-2">
+                  {emp.project_creator_id}
+                </td>
+                <td className="border border-gray-200 px-4 py-2 ">
+                  <button className="text-indigo-600 hover:underline mr-2">
+                    Bewerken
+                  </button>
+                  <button className="text-red-600 hover:underline">
+                    Verwijderen
+                  </button>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
+
         {/* Pagination footer */}
         <div className="flex items-center justify-between pt-[100px] px-4 py-2 text-sm text-gray-600">
-          <div>
-            1 tot {organisations.length} van {organisations.length}
-          </div>
+          <div></div>
           <div className="flex items-center gap-2">
             <button className="p-1 rounded hover:bg-gray-100">left</button>
             <span>Pagina 1 van 1</span>
@@ -140,8 +147,10 @@ function Organisaties() {
           </div>
         </div>
       </div>
+
+      {error && <p className="text-red-600 mt-4">{error}</p>}
     </div>
   );
 }
 
-export default Organisaties;
+export default Projecten;

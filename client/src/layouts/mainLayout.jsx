@@ -5,6 +5,9 @@ import Sidebar from "../components/navigation/sidebar";
 import { useState } from "react";
 import Medewerkers from "../pages/medewerkers";
 import Organisaties from "../pages/organisaties";
+import CustomerForm from "../pages/create-customer";
+import Urenregistratie from "../pages/uren";
+import Projecten from "../pages/projecten";
 
 function MainLayout({ signOut, currentUser }) {
   // State voor huidige tablad
@@ -14,11 +17,21 @@ function MainLayout({ signOut, currentUser }) {
   const renderContent = () => {
     switch (currentTab) {
       case "Registreren":
-        return <Home />;
+        return <Urenregistratie setCurrentTab={setCurrentTab} />;
       case "Medewerkers":
-        return <Medewerkers />;
+        return (
+          <Medewerkers
+            currentUser={currentUser}
+            setCurrentTab={setCurrentTab}
+          />
+        );
       case "Organisaties":
         return <Organisaties />;
+      case "create-user":
+        return <CustomerForm setCurrentTab={setCurrentTab} />;
+      case "Projecten":
+        return <Projecten setCurrentTab={setCurrentTab} />;
+
       default:
         return <Home />;
     }
@@ -35,9 +48,7 @@ function MainLayout({ signOut, currentUser }) {
     <div className="flex min-h-screen">
       <div className="flex flex-col w-full">
         <Header {...headerProps} />
-        <main currentUser={currentUser} className="flex-grow p-6">
-          {renderContent()}
-        </main>
+        <main className="flex-grow p-6 bg-gray-50">{renderContent()}</main>
         <Footer />
       </div>
     </div>
