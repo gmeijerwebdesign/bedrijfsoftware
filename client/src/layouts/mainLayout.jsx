@@ -28,7 +28,9 @@ function MainLayout({ signOut, currentUser }) {
       case "Organisaties":
         return <Organisaties />;
       case "create-user":
-        return <CustomerForm setCurrentTab={setCurrentTab} />;
+        return (
+          <CustomerForm currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        );
       case "Projecten":
         return <Projecten setCurrentTab={setCurrentTab} />;
 
@@ -48,7 +50,7 @@ function MainLayout({ signOut, currentUser }) {
     <div className="flex min-h-screen">
       <div className="flex flex-col w-full">
         <Header {...headerProps} />
-        <main className="flex-grow p-6 bg-gray-50">{renderContent()}</main>
+        <main className="flex-grow  bg-gray-50">{renderContent()}</main>
         <Footer />
       </div>
     </div>

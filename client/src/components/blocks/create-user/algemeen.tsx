@@ -4,7 +4,7 @@ function Algemeen() {
   return (
     <div>
       {/* Main content */}
-      <main className="flex-1 p-8 relative -top-4 ">
+      <main className="flex-1 p-8 relative -top-13 ">
         <div className="bg-white border border-gray-300 rounded-2xl  p-6 min-w-4xl">
           <h2 className="text-xl font-semibold mb-6">Algemeen</h2>
 

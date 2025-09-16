@@ -1,5 +1,5 @@
 import { FaRegClock } from "react-icons/fa";
-import { MdDescription } from "react-icons/md";
+import { PiSquaresFour } from "react-icons/pi";
 import { AiFillProject } from "react-icons/ai";
 import { IoPeople } from "react-icons/io5";
 import { CgOrganisation } from "react-icons/cg";
@@ -22,8 +22,10 @@ function Header({ signOut, currentTab, setCurrentTab }) {
 
   return (
     <div className="relative top-0 w-full h-[70px] border-b border-gray-300 flex items-center px-6 gap-11 bg-white">
-      <FaRegClock className="text-5xl p-2 bg-slate-800 text-blue-500 rounded-md" />
-
+      <div className="flex items-center gap-4">
+        <PiSquaresFour />
+        <FaRegClock className="text-5xl p-2 bg-slate-800 text-blue-500 rounded-md" />
+      </div>
       <div className="flex ">
         {navigationButtons.map((btn) => (
           <button
