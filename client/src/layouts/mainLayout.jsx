@@ -1,12 +1,11 @@
 import Header from "../components/navigation/header";
 import Footer from "../components/navigation/footer";
 import Home from "../pages/home";
-import Sidebar from "../components/navigation/sidebar";
 import { useState } from "react";
 import Medewerkers from "../pages/medewerkers";
 import Organisaties from "../pages/organisaties";
 import CustomerForm from "../pages/create-customer";
-import Urenregistratie from "../pages/uren";
+import Urenregistratie from "../pages/uren.jsx";
 import Projecten from "../pages/projecten";
 
 function MainLayout({ signOut, currentUser }) {

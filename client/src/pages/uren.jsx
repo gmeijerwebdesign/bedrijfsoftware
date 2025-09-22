@@ -12,8 +12,8 @@ export default function TimeTrackerPro() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8 text-gray-800">
       {/* Header */}
-      <header className="mb-8 flex items-center justify-between">
-        <h1 className="text-3xl font-semibold tracking-tight">
+      <header className=" flex items-center justify-between mb-4">
+        <h1 className="text-xl font-semibold text-gray-800 tracking-tight">
           Maandag 15 september <span className="text-gray-400">(vandaag)</span>
         </h1>
         <button className="flex items-center gap-1 rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm transition hover:bg-gray-50">
@@ -23,12 +23,12 @@ export default function TimeTrackerPro() {
       </header>
 
       {/* Main layout */}
-      <main className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <main className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         {/* ---------- Left: Entry form ---------- */}
-        <section className="rounded-3xl bg-white p-8 shadow-xl">
+        <section className="rounded-3xl bg-white p-6 shadow-xl">
           <div className="space-y-5">
             {[
-              "Selecteer een klant",
+              "Selecteer een medewerker",
               "Selecteer een project",
               "Selecteer een activiteit",
             ].map((placeholder, i) => (
@@ -46,14 +46,14 @@ export default function TimeTrackerPro() {
             </div>
 
             {/* Timer */}
-            <div className="text-center pt-4">
+            <div className="text-center ">
               <p className="font-mono text-5xl font-semibold tracking-tight">
                 00:00
               </p>
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-4 pt-4">
+            <div className="flex gap-4 ">
               <ActionButton icon={<FaPlay />} variant="secondary">
                 Start timer
               </ActionButton>
@@ -65,7 +65,7 @@ export default function TimeTrackerPro() {
         </section>
 
         {/* ---------- Right: Week overview ---------- */}
-        <section className="flex flex-col rounded-3xl bg-white p-8 shadow-xl">
+        <section className="flex flex-col rounded-3xl bg-white p-6 shadow-xl">
           {/* Days header */}
           <div className="mb-8 flex justify-between">
             {days.map((day, i) => (

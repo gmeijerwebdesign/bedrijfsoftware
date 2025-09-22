@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import Algemeen from "../components/blocks/create-user/algemeen";
 import OrganisatieForm from "../components/blocks/create-user/organisatie";
-import Action from "../components/blocks/create-user/action";
+import Action from "../components/blocks/create-user/action.jsx";
 import Topper from "../components/navigation/topper";
 
 export default function CustomerForm({ currentTab, setCurrentTab }) {
