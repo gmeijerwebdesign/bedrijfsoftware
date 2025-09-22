@@ -4,9 +4,11 @@ import Home from "../pages/home";
 import { useState } from "react";
 import Medewerkers from "../pages/medewerkers";
 import Organisaties from "../pages/organisaties";
-import CustomerForm from "../pages/create-customer";
+import CustomerForm from "../pages/create/create-customer.jsx";
 import Urenregistratie from "../pages/uren.jsx";
 import Projecten from "../pages/projecten";
+import CreateOrganisation from "../pages/create/create-organisation.jsx";
+import CreateProject from "../pages/create/create-project.jsx";
 
 function MainLayout({ signOut, currentUser }) {
   // State voor huidige tablad
@@ -25,10 +27,24 @@ function MainLayout({ signOut, currentUser }) {
           />
         );
       case "Organisaties":
-        return <Organisaties />;
+        return <Organisaties setCurrentTab={setCurrentTab} />;
       case "create-user":
         return (
           <CustomerForm currentTab={currentTab} setCurrentTab={setCurrentTab} />
+        );
+      case "create-organisation":
+        return (
+          <CreateOrganisation
+            currentTab={currentTab}
+            setCurrentTab={setCurrentTab}
+          />
+        );
+      case "create-project":
+        return (
+          <CreateProject
+            currentTab={currentTab}
+            setCurrentTab={setCurrentTab}
+          />
         );
       case "Projecten":
         return <Projecten setCurrentTab={setCurrentTab} />;

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import Topper from "../components/navigation/topper";
-import MedewerkerForm from "../components/blocks/forms/medewerkerForm";
-import TeamsForm from "../components/blocks/forms/teamsForm";
+
+import DataTable from "../components/blocks/forms/form";
 
 function Medewerkers({ currentUser, setCurrentTab }) {
   const [users, setUsers] = useState([]);
@@ -34,6 +34,38 @@ function Medewerkers({ currentUser, setCurrentTab }) {
     ? users.filter((u) => u.organisation_id === currentUser.organisation_id)
     : [];
 
+  if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
+
+  const columns = [
+    {
+      header: "Naam",
+      render: (emp) => (
+        <span className="text-blue-700 font-medium cursor-pointer">
+          {emp.username.replace("@gmail.com", "")}
+        </span>
+      ),
+    },
+    { header: "Email", accessor: "username" },
+    { header: "Rol", accessor: "role" },
+    {
+      header: "Organisatie",
+      render: (emp) =>
+        organisations.find((org) => org.organisation_id === emp.organisation_id)
+          ?.title || "—",
+    },
+    {
+      header: "Acties",
+      render: () => (
+        <>
+          <button className="text-indigo-600 hover:underline mr-2">
+            Bewerken
+          </button>
+          <button className="text-red-600 hover:underline">Verwijderen</button>
+        </>
+      ),
+    },
+  ];
+
   return (
     <div>
       <Topper
@@ -42,7 +74,7 @@ function Medewerkers({ currentUser, setCurrentTab }) {
         panels={panel_indentifiers}
       />
       <div className="p-6">
-        {currentPanel === "Medewerkers" ? (
+        {/* {currentPanel === "Medewerkers" ? (
           <MedewerkerForm
             setCurrentTab={setCurrentTab}
             list={list}
@@ -56,7 +88,16 @@ function Medewerkers({ currentUser, setCurrentTab }) {
             organisations={organisations}
             error={error}
           />
-        )}
+        )} */}
+        <DataTable
+          title="Medewerkers"
+          data={list || []}
+          columns={columns}
+          rowKey="organisation_id" // belangrijk
+          selectable={true} // laat checkboxes zien
+          createLabel="Nieuwe organisatie"
+          onCreateClick={() => setCurrentTab("create-user")}
+        />
       </div>
     </div>
   );
